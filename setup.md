@@ -6,7 +6,7 @@ python manage.py runserver
 
 
 
-python manage.py makemigrations polls
+python manage.py makemigrations tickets
 python manage.py migrate
 
 python manage.py createsuperuser
