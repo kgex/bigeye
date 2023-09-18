@@ -1,7 +1,12 @@
 from django.contrib import admin
-from .models import Question
+from .models import Washroom, Ticket, CustomUser, Role
 
 # Register your models here.
 
-admin.site.register(Question)
+
+admin.site.register(Washroom)
+admin.site.register(Ticket)
+admin.site.register(CustomUser)
+admin.site.register(Role)
+
 

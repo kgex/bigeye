@@ -25,14 +25,17 @@ SECRET_KEY = 'django-insecure-ctfk^@*1ig*r@11@m@!eea@#avenz8y0a%x8o71d_43#&@c4eu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-        'qr_code',
-
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'qr_code',
     'tickets.apps.TicketsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,13 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
-    # 'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
+    # 'django.contrib.auth.backends.ModelBackend',
+    # "allauth.account.middleware.AccountMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -55,7 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # "allauth.account.middleware.AccountMiddleware",
+    # 'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 ROOT_URLCONF = 'bigeye.urls'
@@ -63,7 +65,7 @@ ROOT_URLCONF = 'bigeye.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ["templates", "tickets/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -111,21 +113,24 @@ AUTH_PASSWORD_VALIDATORS = [
 SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
+    
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/tickets'
+LOGOUT_REDIRECT_URL = '/tickets/login'
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
             'client_id': '1073866329241-unk3dge8ljr652phadk631hubj3frllq.apps.googleusercontent.com',
             'secret': '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',
+
             'key': ''
         },
         'SCOPE': [
