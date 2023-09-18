@@ -19,6 +19,7 @@ class CustomUser(models.Model):
         return self.email
 
 class Washroom(models.Model):
+    unique_id = models.IntegerField(unique=True)
     name = models.CharField(max_length=200)
     location = models.CharField(max_length=200)
     condition = models.CharField(max_length=200)

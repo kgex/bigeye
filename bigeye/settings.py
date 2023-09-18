@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'qr_code',
     'tickets.apps.TicketsConfig',
     'django.contrib.admin',
     'django.contrib.auth',

@@ -11,10 +11,13 @@ from allauth.account.views import LoginView
 def login(request):
     # Your custom logic here, if needed
     return LoginView.as_view(template_name='polls/login.html')(request)
+
 @login_required(login_url='/tickets/login/')
 def ticket(request, wr_name):
+    print("outside")
     if request.method == 'POST':
-        wr = Washroom.objects.get(name=wr_name)
+        print("inside")
+        wr = Washroom.objects.get(unique_id=wr_name)
         title = request.POST.get('title')
         print(title)
         print(request.POST.get('title_text'))
@@ -23,8 +26,8 @@ def ticket(request, wr_name):
         ticket = Ticket(title=title, ticket_text=title_text, washroom=wr, user=user)
         ticket.save()
         return redirect('home')
-    wr = Washroom.objects.get(name=wr_name)
-    context = {"wr_name" : wr.name, "wr_location" : wr.location, "wr_condition" : wr.condition}
+    wr = Washroom.objects.get(unique_id=wr_name)
+    context = {"wr_name" : wr.unique_id, "wr_location" : wr.location, "wr_condition" : wr.condition}
     template = loader.get_template('polls/ticket.html') 
     return HttpResponse(template.render(context, request))
 
@@ -32,14 +35,13 @@ def ticket(request, wr_name):
 def home(request):
     # print(request.user.email_address)
     # print(request.user.email)
-    for obj in CustomUser.objects.all():
-        print(obj.email)
     try:
         user = CustomUser.objects.get_or_create(email=request.user.email, username=request.user.email)[0]
         user_tickets = Ticket.objects.filter(user=user)
     except:
         user_tickets = []
     context = {"user_tickets" : user_tickets}
+    print("Im here")
     template = loader.get_template('polls/home.html')
     return HttpResponse(template.render(context, request))
 

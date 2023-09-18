@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (code) {
                             // QR code detected, navigate to the scanned URL
                             clearInterval(interval);
-                            window.location.href = `/tickets${code.data}`; // Redirect to the scanned URL
+                            window.location.href = `/tickets/${code.data}`; // Redirect to the scanned URL
                             console.log(code.data)
                         }
                     }, 100);
