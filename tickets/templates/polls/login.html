@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+{%load socialaccount %}
+
+  <div class="login-form">
+    <h2>Login</h2>
+
+    <!-- Google OAuth login link -->
+    <a href="{% provider_login_url 'google' next=bla %}">Login with Google</a>
+  </div>
+{% endblock %}

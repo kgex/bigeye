@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>My Tickets</h1>
+    
+{% if user_tickets %}
+    <table>
+        <thead>
+            <tr>
+                <th>Washroom</th>
+                <th>Title</th>
+                <th>Title Text</th>
+                <th>Title Status</th>
+                <!-- Add more table headers as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in user_tickets %}
+                <tr>
+                    <td>{{ ticket.washroom.location }}</td>
+                    <td>{{ ticket.title }}</td>
+                    <td>{{ ticket.ticket_text }}</td>
+                    <td>{{ ticket.status }}</td>
+                    <!-- Add more ticket information as needed -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>You don't have any tickets yet.</p>
+{% endif %}
+
+<!-- Add a button to open the camera for QR code scanning -->
+<button id="scanQRCode">Scan QR Code</button>
+
+<script src=" https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js "></script>
+<script >
+document.addEventListener('DOMContentLoaded', function() {
+    const scanButton = document.getElementById('scanQRCode');
+    
+    scanButton.addEventListener('click', function() {
+        // Request camera access and initiate QR code scanning
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                const video = document.createElement('video');
+                document.body.appendChild(video);
+                video.srcObject = stream;
+                video.play();
+                
+                // QR code scanning logic using a library like jsQR
+                const canvasElement = document.createElement('canvas');
+                const canvas = canvasElement.getContext('2d');
+                video.addEventListener('loadedmetadata', function() {
+                    canvasElement.width = video.videoWidth;
+                    canvasElement.height = video.videoHeight;
+                    const interval = setInterval(function() {
+                        canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+                        const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+                        const code = jsQR(imageData.data, imageData.width, imageData.height);
+                        console.log(code.data)
+                        if (code) {
+                            // QR code detected, navigate to the scanned URL
+                            clearInterval(interval);
+                            window.location.href = `/tickets${code.data}`; // Redirect to the scanned URL
+                            console.log(code.data)
+                        }
+                    }, 100);
+                });
+            })
+            .catch(function(error) {
+                console.error('Error accessing camera: ' + error);
+            });
+    });
+});
+</script>
+
+<a href="{% url 'logout' %}">Logout</a>
+{% endblock %}
