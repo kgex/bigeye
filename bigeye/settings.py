@@ -128,10 +128,9 @@ LOGOUT_REDIRECT_URL = '/tickets/login'
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            # 'client_id': '1073866329241-unk3dge8ljr652phadk631hubj3frllq.apps.googleusercontent.com',
-            # 'secret': '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',
-            'client_id': '1013701545344-bct9lpn40eqiqh1cnq8o0tttitl9l15j.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': '1073866329241-unk3dge8ljr652phadk631hubj3frllq.apps.googleusercontent.com',
+            'secret': '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',
+
             'key': ''
         },
         'SCOPE': [
